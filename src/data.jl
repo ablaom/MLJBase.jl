@@ -27,7 +27,9 @@ true, `x in x.pool.levels` is not true.
 """
 function classes(x::CategoricalElement)
     p = x.pool
-    return [p.valindex[p.invindex[v]] for v in p.levels]
+    # hack b/s of
+    # https://github.com/JuliaData/CategoricalArrays.jl/issues/199:
+    return Any[p.valindex[p.invindex[v]] for v in p.levels]
 end
 
 # a method just for testing:

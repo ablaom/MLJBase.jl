@@ -32,6 +32,16 @@ abstract type NonEuclidean <: Distributions.ValueSupport end
 
 ## UNIVARIATE NOMINAL PROBABILITY DISTRIBUTION
 
+function classes(d::UnivariateFinite)
+    p = d.pool
+    # "Any" is hack b/s of
+    # https://github.com/JuliaData/CategoricalArrays.jl/issues/199:
+    return Any[p.valindex[p.invindex[v]] for v in p.levels]
+end
+
+class(ref, pool) = pool.valindex[ref]
+
+
 """
     UnivariateFinite(classes, p)
 
@@ -87,7 +97,7 @@ function UnivariateFinite(prob_given_cSlass::AbstractDict{L}) where L
     L <: CategoricalElement ||
         error("The support of a UnivariateFinite can consist only of "*
               "CategoricalString or CategoricalValue elements. ")
-end
+end 
 
 function UnivariateFinite(prob_given_class::AbstractDict{L,T}) where {U<:Unsigned,L<:CategoricalElement{U},T<:Real}
     
@@ -113,16 +123,12 @@ function UnivariateFinite(classes::AbstractVector{L},
     return  UnivariateFinite(prob_given_class)
 end
 
-function classes(d::UnivariateFinite)
-    p = d.pool
-    return [p.valindex[p.invindex[v]] for v in p.levels]
-end
-
-class(pool, ref) = pool.valindex[ref]
-
 function Distributions.support(d::UnivariateFinite)
-    refs = collect(keys(d.prob_given_class)) 
-    return sort!(map(r->class(d.pool, r), refs))
+    refs = collect(keys(d.prob_given_class))
+    # hack because of
+    # https://github.com/JuliaData/CategoricalArrays.jl/issues/199:
+    return sort(Any[class(r, d.pool) for r in refs])
+#    return sort(map(r->class(r, d.pool), refs))
 end
 
 function Base.show(stream::IO, d::UnivariateFinite)
