@@ -32,13 +32,6 @@ abstract type NonEuclidean <: Distributions.ValueSupport end
 
 ## UNIVARIATE NOMINAL PROBABILITY DISTRIBUTION
 
-function classes(d::UnivariateFinite)
-    p = d.pool
-    # "Any" is hack b/s of
-    # https://github.com/JuliaData/CategoricalArrays.jl/issues/199:
-    return Any[p.valindex[p.invindex[v]] for v in p.levels]
-end
-
 class(ref, pool) = pool.valindex[ref]
 
 
@@ -121,6 +114,13 @@ function UnivariateFinite(classes::AbstractVector{L},
     Dist.@check_args(UnivariateFinite, length(classes)==length(p))
     prob_given_class = LittleDict([classes[i]=>p[i] for i in eachindex(p)])
     return  UnivariateFinite(prob_given_class)
+end
+
+function classes(d::UnivariateFinite)
+    p = d.pool
+    # "Any" is hack b/s of
+    # https://github.com/JuliaData/CategoricalArrays.jl/issues/199:
+    return Any[p.valindex[p.invindex[v]] for v in p.levels]
 end
 
 function Distributions.support(d::UnivariateFinite)
