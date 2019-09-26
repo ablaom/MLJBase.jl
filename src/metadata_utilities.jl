@@ -30,7 +30,7 @@ function metadata_pkg(T; name::String="unknown", uuid::String="unknown", url::St
         package_license(::Type{<:$T}) = $license
         is_wrapper(::Type{<:$T})      = $is_wrapper
     end
-    eval(ex)
+    Main.eval(ex)
 end
 
 """
@@ -53,5 +53,5 @@ function metadata_model(T; input=Unknown, target=Unknown,
         docstring(::Type{<:$T})        = docstring_ext($T, descr=$descr)
         load_path(::Type{<:$T})        = $path
     end
-    eval(ex)
+    Main.eval(ex)
 end
