@@ -1,6 +1,6 @@
 # Users of this module should first read the document
 # https://alan-turing-institute.github.io/MLJ.jl/dev/adding_models_for_general_use/
-module MLJBase 
+module MLJBase
 
 export MLJType, Model, Supervised, Unsupervised
 export Deterministic, Probabilistic, Interval
@@ -209,7 +209,8 @@ include("distributions.jl")
 include("info.jl")
 include("datasets.jl") # importing CSV will also load datasets_requires.jl
 include("tasks.jl")
-include("measures.jl")
+
+include("measures/measures.jl")
 
 # mlj model macro to help define models
 include("mlj_model_macro.jl")
