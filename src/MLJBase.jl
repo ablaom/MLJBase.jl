@@ -29,9 +29,10 @@ export UnivariateFinite, average                     # distributions.jl
 export SupervisedTask, UnsupervisedTask, MLJTask     # tasks.jl
 export X_and_y, X_, y_, nrows, nfeatures             # tasks.jl
 export info                                          # info.jl
-export @load_boston, @load_ames, @load_iris          # datasets.jl
-export @load_reduced_ames                            # datasets.jl
-export @load_crabs                                   # datasets.jl
+export load_boston, load_ames, load_iris,
+       load_reduced_ames, load_crabs,
+       @load_boston, @load_ames, @load_iris,
+       @load_reduced_ames, @load_crabs               # datasets.jl
 export orientation, reports_each_observation         # measures.jl
 export is_feature_dependent                          # measures.jl
 export default_measure, value                        # measures.jl
@@ -56,26 +57,25 @@ export std
 import Base.==
 import Base: @__doc__
 
-using Tables
+using Tables, DelimitedFiles
 using OrderedCollections # already a dependency of StatsBase
-import Distributions
-import Distributions: pdf, mode
 using CategoricalArrays
-using OrderedCollections
-import CategoricalArrays
-using ScientificTypes
-import ScientificTypes: trait
 
 # to be extended:
 import StatsBase: fit, predict, fit!
 import Missings.levels
 
+import Distributions
+import Distributions: pdf, mode
+
+using ScientificTypes
 
 # from Standard Library:
+
 using Statistics
 using Random
 using InteractiveUtils
-
+using LossFunctions
 
 ## CONSTANTS
 
@@ -88,12 +88,10 @@ const DEFAULT_SHOW_DEPTH = 0
 
 include("utilities.jl")
 
-
 ## BASE TYPES
 
 abstract type MLJType end
 include("equality.jl") # equality for MLJType objects
-
 
 ## ABSTRACT MODEL TYPES
 
@@ -178,7 +176,6 @@ function best end
 # message):
 clean!(model::Model) = ""
 
-
 ## TRAITS
 
 """
@@ -207,7 +204,7 @@ include("data.jl")
 include("distributions.jl")
 
 include("info.jl")
-include("datasets.jl") # importing CSV will also load datasets_requires.jl
+include("datasets.jl")
 include("tasks.jl")
 
 include("measures/measures.jl")
@@ -218,7 +215,12 @@ include("mlj_model_macro.jl")
 # metadata utils
 include("metadata_utilities.jl")
 
-# __init__() function:
-include("init.jl")
+ScientificTypes.TRAIT_FUNCTION_GIVEN_NAME[:supervised_model] =
+    x-> x isa Supervised
+ScientificTypes.TRAIT_FUNCTION_GIVEN_NAME[:unsupervised_model] =
+    x-> x isa Unsupervised
+ScientificTypes.TRAIT_FUNCTION_GIVEN_NAME[:measure] =  is_measure
+
+include("loss_functions_interface.jl")
 
 end # module

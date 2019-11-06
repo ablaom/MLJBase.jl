@@ -131,13 +131,3 @@ end
 
 # Confusion matrix (for any number of classes) and associated
 # metrics in the binary case
-
-struct ConfusionMatrix{C<:Integer}
-    m::Matrix
-end
-
-function ConfusionMatrix(m::Matrix{<:Integer})
-    s = size(m)
-    s[1]==s[2] || throw(ArgumentError("Expected a square matrix"))
-    ConfusionMatrix{s[1]}(m)
-end
