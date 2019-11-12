@@ -8,7 +8,7 @@ export DeterministicNetwork, ProbabilisticNetwork, UnsupervisedNetwork
 export fit, update, clean!
 export predict, predict_mean, predict_mode, fitted_params
 export transform, inverse_transform, se, evaluate, best
-export info, info_dict
+export info
 export is_same_except
 
 export load_path, package_url, package_name, package_uuid  # model_traits.jl
@@ -28,7 +28,7 @@ export color_on, color_off                           # show.jl
 export UnivariateFinite, average                     # distributions.jl
 export SupervisedTask, UnsupervisedTask, MLJTask     # tasks.jl
 export X_and_y, X_, y_, nrows, nfeatures             # tasks.jl
-export info                                          # info.jl
+export info_dict                                     # info.jl
 export load_boston, load_ames, load_iris,
        load_reduced_ames, load_crabs,
        @load_boston, @load_ames, @load_iris,
@@ -186,7 +186,6 @@ List the traits of an object, such as a model or a performance measure.
 
 """
 info(object) = info(object, Val(ScientificTypes.trait(object)))
-
 
 include("model_traits.jl")
 

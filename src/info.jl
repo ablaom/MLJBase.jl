@@ -1,6 +1,6 @@
-# `info` returns a dictionary of model trait values suitable, after
-# encoding, to serializing to TOML file. Not intended to be exposed to
-# user. The `traits` function, defined in MLJ, returns the trait
+# `info_dict` returns a dictionary of model trait values suitable, after
+# encoding, for serializing to TOML file. Not intended to be exposed to
+# user. The `info` function, defined in MLJ, returns the trait
 # values as a named-tuple, more friendly for user-interaction. One can
 # similarly call `traits` on performance measures.
 

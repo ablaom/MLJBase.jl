@@ -439,7 +439,7 @@ Brier score for that observation is given by
 
 ``2p(y) - \\left(\\sum_{η ∈ C} p(η)^2\\right) - 1``
 
-For more information, run `info(brier_score)`.
+For more information, run `info(BrierScore())`.
 
 """
 function BrierScore(; distribution=UnivariateFinite)
