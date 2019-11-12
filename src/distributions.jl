@@ -238,6 +238,9 @@ function average(dvec::AbstractVector{UnivariateFinite{L,U,T}};
     return UnivariateFinite(first(dvec).decoder, prob_given_class)
 end
 
+Statistics.mean(v::AbstractVector{UnivariateFinite{L,U,T}}) where {L,U,T} =
+    average(v)
+
 function _pdf(d::UnivariateFinite{L,U,T}, ref) where {L,U,T}
     return get(d.prob_given_class, ref, zero(T))
 end
